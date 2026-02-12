@@ -1,0 +1,8 @@
+{
+    "id": "hello_world",
+    "title": "Hello World Fix",
+    "description": "Fix the print statement to correctly output 'Hello, World!'",
+    "difficulty": "Easy",
+    "start_text": "print('Helo, Wolrd!')\n",
+    "goal_text": "print('Hello, World!')\n"
+}

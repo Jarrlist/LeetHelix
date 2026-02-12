@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "leet-helix"
+version = "0.1.0"
+description = "Practice editing in Helix"
+authors = [{name = "User"}]
+dependencies = [
+    "typer",
+    "rich",
+    "sqlmodel",
+    "sqlite-utils",
+    "pytest",
+]
+
+[project.scripts]
+leet = "leet_helix.main:app"

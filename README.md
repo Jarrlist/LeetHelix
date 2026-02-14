@@ -159,4 +159,14 @@ To run the tests:
 pytest
 ```
 
-If you want to add a test check docs/ADDING_CHALLANGES.md
+# Contribute
+Contributions are most welcome!
+
+## Did you find a bug? Do you think some problems or hints could be worded differently?
+Create an issue or a PR with the fix.
+
+## Do you want to add challenge, maybe a new language?
+Create PR. Also, take a look at docs/ADDING_CHALLANGES.md
+
+## Do you have some idea of a new feature, or big change?
+Start a thread in the discussions or create a PR.

@@ -16,7 +16,7 @@ If you want to contribute or modify the code:
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/jarrlist/leet-helix.git
+    git clone https://github.com/Jarrlist/LeetHelix.git
     cd leet-helix
     ```
 

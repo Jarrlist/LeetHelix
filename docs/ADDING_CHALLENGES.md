@@ -105,10 +105,16 @@ Creating high-quality challenges ensures users learn effectively. Follow these p
 6.  **Idiomatic Helix**:
     *   Teach the "Helix way". If a task can be done with `mr` (match replace), don't teach `d` then `i`.
     *   If a tip uses a specific feature (e.g., `s` for regex selection), ensure the corresponding tag (`select_regex`) is present in `config.json`.
+    *   **Specific Commands**: If using `gw` (jump to label), be precise. It is not just "goto word".
 
 7.  **Selection Strategy**:
     *   **Avoid `%`**: In the game environment, the file includes a description header and tips footer. Using `%` selects these artifacts, which breaks many transformation commands.
     *   **Use Specific Selectors**: Teach `vip` (select inner paragraph), `x` (select line), or `mi...` (select inside object) to target the user's code block specifically.
+
+8.  **Robustness & Anti-Cheating**:
+    *   **Vary Values**: When asking to change multiple occurrences, ensure the values differ (e.g., `timeout=30`, `timeout=6000`). This prevents simple Find/Replace (`%s`) or macro solutions from being too easy and forces structural navigation.
+    *   **Mix Types**: Use combinations of lists, tuples, and dicts. This prevents "gaming" the challenge by searching for a single closing delimiter (like `)`) to find the end of a block.
+    *   **Noise**: Add "noisy" content (e.g., strings containing parentheses) to break simple regex searches if the goal is structural navigation (`mm`).
 
 ## ⚠️ Common Pitfalls
 
@@ -116,6 +122,7 @@ Creating high-quality challenges ensures users learn effectively. Follow these p
 *   **Vague Instructions**: "Fix the code" is bad. "Change the function name to 'process'" is good.
 *   **Overwhelming Tips**: Don't dump 5 different ways to do it. Teach the *best* way.
 *   **Short Files**: Helix shines in large files. One-liners don't demonstrate the power of `gw` or `mip`.
+*   **Uniform Data**: "Change all `foo` to `bar`" is often better solved with `%s/foo/bar`. "Remove the 2nd argument from these 3 different function calls" forces cursor movement and specific edits.
 
 ## 🗺️ Roadmap: Missing Features
 
@@ -123,9 +130,8 @@ We need challenges for these Helix features:
 
 1.  **Macros (`q`, `Q`)**: Recording and replaying complex edits.
 2.  **Registers (`"`)**: Yanking to named registers (`"ay`) and pasting (`"ap`).
-3.  **Tree-sitter Navigation (`Alt-p`, `Alt-n`)**: Moving by function/class/parameter.
-4.  **Selection Filtering (`K`, `Alt-K`)**: Keeping/removing cursors matching a regex.
-5.  **Shell Piping (`|`)**: Sorting lines or formatting via external CLI tools.
+3.  **Selection Filtering (`K`, `Alt-K`)**: Keeping/removing cursors matching a regex.
+4.  **Shell Piping (`|`)**: Sorting lines or formatting via external CLI tools.
 
 ## 🏷️ Tags & Categories
 
@@ -135,9 +141,9 @@ We use a standardized list of tags to categorize challenges by the Helix feature
 *   **Selection**: Always verify tags against that file. Do not invent new tags without updating `docs/HelixLabels.md` first.
 
 **Common Tags:**
-*   `movement_basic`, `movement_word`, `movement_find`
-*   `edit_insert`, `edit_delete`, `edit_change`, `edit_replace`, `edit_case`, `edit_join`
-*   `select_line`, `select_regex`, `select_object`
+*   `movement_basic`, `movement_word`, `movement_find`, `movement_goto`
+*   `edit_insert`, `edit_delete`, `edit_change`, `edit_replace`, `edit_case`, `edit_join`, `edit_comment`
+*   `select_line`, `select_regex`, `select_object`, `select_syntax`
 *   `search_basic`, `search_selection`
 *   `surround_add`, `surround_replace`
 *   `multicursor`
@@ -151,7 +157,9 @@ We use a standardized list of tags to categorize challenges by the Helix feature
 ## 🚀 Workflow for Agents
 
 1.  **Plan**: Identify a Helix feature to teach (e.g., "Multiple Cursors").
-2.  **Consult**: Check `docs/HelixLabels.md` for the correct tag (e.g., `multicursor`).
+2.  **Consult & Update Labels**: 
+    *   Check `docs/HelixLabels.md` for the correct tag (e.g., `multicursor`). 
+    *   **Crucial**: If the feature (e.g., "Comment" `Ctrl-c`) is missing, you **MUST** add it to `docs/HelixLabels.md` first. Do not use an incorrect tag or invent one without documentation.
 3.  **Draft**: Create the `start` and `goal` code.
     *   *Tip*: For `multicursor`, ensure there are aligned patterns in `start.py` that make vertical selection or regex selection obvious.
 4.  **Configure**: Create `config.json`.
@@ -162,14 +170,3 @@ We use a standardized list of tags to categorize challenges by the Helix feature
     *   Are headers removed from `start`/`goal` files?
     *   Are tags valid?
     *   Does the tip avoid selecting the whole file with `%`?
-
-## 💡 Example: Creating a "Select Object" Challenge
-
-1.  **Goal**: Teach `mi(` (select inside parenthesis).
-2.  **Code**:
-    *   `start.py`: `func(  badly   formatted  args  )`
-    *   `goal.py`: `func(clean_args)`
-3.  **Config**:
-    *   `id`: "select_inside_parens"
-    *   `tags`: ["select_object", "edit_change"]
-    *   `tips`: "Move inside (). Press 'mi(' to select content. Press 'c' to change."

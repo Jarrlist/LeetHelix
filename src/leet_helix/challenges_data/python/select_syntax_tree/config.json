@@ -1,0 +1,16 @@
+{
+    "id": "select_syntax_tree",
+    "title": "Syntax Climber",
+    "description": "Remove the entire 'if use_legacy_mode:' block (logic and wrapper) cleanly.",
+    "difficulty": "Medium",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "1. Move inside the 'if' block.\n2. Press 'Alt-o' repeatedly to expand selection (Line -> Block -> Function).\n3. 'd' to delete.\n(Note: Requires tree-sitter. Starting on the 'if' keyword selects the block faster).",
+    "tags": [
+        "select_syntax",
+        "edit_delete"
+    ],
+    "author_time": 6.22
+}

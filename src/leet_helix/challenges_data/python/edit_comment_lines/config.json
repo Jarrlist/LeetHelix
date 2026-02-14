@@ -1,0 +1,16 @@
+{
+    "id": "edit_comment_lines",
+    "title": "Comment Lines",
+    "description": "Uncomment the 3 dictionary keys simultaneously using Ctrl-c.",
+    "difficulty": "Medium",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "1. Move to the first commented line.\n2. Select the lines (e.g. '3x' or 'xxx').\n3. Press 'Ctrl-c' to toggle comments.",
+    "tags": [
+        "edit_comment",
+        "select_line"
+    ],
+    "author_time": 4.04
+}

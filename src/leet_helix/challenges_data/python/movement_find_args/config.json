@@ -1,0 +1,18 @@
+{
+    "id": "movement_find_args",
+    "title": "Argument Trimmer",
+    "description": "Remove the last 2 arguments (cache, timeout) from the definition and all calls.",
+    "difficulty": "Medium",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "1. 'gw' -> type label for 'cache'.\n2. 'b' -> move to comma.\n3. 'vt)' -> select to closing paren.\n4. 'd' -> delete.",
+    "tags": [
+        "movement_goto",
+        "movement_word",
+        "edit_delete",
+        "select_basic"
+    ],
+    "author_time": 26.22
+}

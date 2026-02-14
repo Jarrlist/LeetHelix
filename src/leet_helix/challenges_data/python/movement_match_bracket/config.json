@@ -1,0 +1,16 @@
+{
+    "id": "movement_match_bracket",
+    "title": "The Bracket Gate",
+    "description": "Add missing commas between the items in 'data'. Use 'mm' to handle mixed types.",
+    "difficulty": "Medium",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "1. Move to the opening char of the first item (a tuple).\n2. Press 'mm' to jump to its closing char.\n3. Press 'a,' to append a comma.\n4. Repeat for the next block [].",
+    "tags": [
+        "movement_match",
+        "edit_insert"
+    ],
+    "author_time": 9.98
+}

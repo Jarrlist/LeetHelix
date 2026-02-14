@@ -151,6 +151,20 @@ This menu will show you your best overall times and milestones, each level has t
 └─────────────────────────────┴───────────┴───────────┴───────────┴──────────┘
 ```
 
+### 4. Upgrade
+
+Keep your LeetHelix up to date to get new challenges.
+
+```bash
+leet --upgrade
+```
+
+Or manually:
+
+```bash
+pip install --upgrade git+https://github.com/Jarrlist/LeetHelix.git
+```
+
 ## Development
 
 To run the tests:

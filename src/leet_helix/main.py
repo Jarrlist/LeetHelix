@@ -8,6 +8,10 @@ import subprocess
 import tempfile
 import time
 import random
+import sys
+import urllib.request
+import re
+from importlib.metadata import version, PackageNotFoundError
 from datetime import datetime, timedelta, timezone
 from .judge import display_feedback, check_solution
 from .database import init_db, log_attempt, get_attempts
@@ -16,6 +20,92 @@ app = typer.Typer()
 console = Console()
 
 CHALLENGES_DIR = pathlib.Path(__file__).parent / "challenges_data"
+REPO_URL = "https://github.com/Jarrlist/LeetHelix.git"
+
+def get_current_version():
+    try:
+        return version("leet-helix")
+    except PackageNotFoundError:
+        return "0.0.0"
+
+def get_latest_version():
+    try:
+        # We need the raw file content to read the version string.
+        # Convert the repo URL to the raw content URL for pyproject.toml on the main branch.
+        # From: https://github.com/User/Repo.git
+        # To:   https://raw.githubusercontent.com/User/Repo/main/pyproject.toml
+        # Note: If the repo is private, this will fail without a token.
+        
+        # Remove .git suffix if present
+        repo_base = REPO_URL[:-4] if REPO_URL.endswith(".git") else REPO_URL
+        raw_url = repo_base.replace("github.com", "raw.githubusercontent.com") + "/main/pyproject.toml"
+        
+        # GitHub requires a User-Agent header
+        req = urllib.request.Request(raw_url, headers={'User-Agent': 'LeetHelix-CLI'})
+        
+        with urllib.request.urlopen(req, timeout=3) as response:
+            content = response.read().decode()
+            # extract version using regex
+            match = re.search(r'version\s*=\s*"([^"]+)"', content)
+            if match:
+                return match.group(1)
+            return None
+    except Exception as e:
+        # Silently fail or return None, but maybe useful to know why if debugging
+        # console.print(f"[dim]Debug: failed to check version: {e}[/dim]")
+        return None
+
+def upgrade_package(force: bool = False):
+    """Upgrade LeetHelix to the latest version."""
+    console.print("[cyan]Checking for updates...[/cyan]")
+    latest = get_latest_version()
+    current = get_current_version()
+    
+    if not latest:
+        console.print("[red]Could not fetch latest version info from GitHub.[/red]")
+        if not force:
+            console.print("[yellow]Use --force to force upgrade from GitHub anyway.[/yellow]")
+            return
+        console.print("[yellow]Force upgrading from GitHub...[/yellow]")
+    elif latest == current:
+        if not force:
+            console.print(f"[green]You are already on the latest version ({current}).[/green]")
+            return
+        console.print(f"[yellow]Force reinstalling version {current}...[/yellow]")
+    else:
+        # Check if latest is actually newer than current
+        # Simple string comparison might fail for complex versions, but for now it's okay?
+        # Better to use packaging.version if available, but we don't have it in dependencies?
+        # We can assume standard versioning.
+        # If current > latest (e.g. dev version), we shouldn't downgrade.
+        try:
+            # simple split check
+            l_parts = [int(x) for x in latest.split('.')]
+            c_parts = [int(x) for x in current.split('.')]
+            if l_parts < c_parts:
+                 if not force:
+                     console.print(f"[yellow]You have a newer version ({current}) than GitHub ({latest}). Not downgrading.[/yellow]")
+                     return
+                 console.print(f"[yellow]Force downgrading from {current} to {latest}...[/yellow]")
+            else:
+                 console.print(f"[yellow]Upgrading from {current} to {latest}...[/yellow]")
+        except ValueError:
+            # Fallback if version strings are weird
+            console.print(f"[yellow]Upgrading from {current} to {latest}...[/yellow]")
+
+    try:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", f"git+{REPO_URL}"])
+        console.print(f"[bold green]Successfully upgraded![/bold green]")
+    except subprocess.CalledProcessError as e:
+        console.print(f"[red]Failed to upgrade: {e}[/red]")
+
+@app.callback(invoke_without_command=True)
+def main(ctx: typer.Context, 
+         upgrade: bool = typer.Option(False, "--upgrade", help="Upgrade to latest version", is_eager=True),
+         force: bool = typer.Option(False, "--force", help="Force upgrade (allow downgrade/reinstall)", is_eager=True)):
+    if upgrade:
+        upgrade_package(force)
+        raise typer.Exit()
 
 def get_comment_prefix(language: str) -> str:
     """Returns the comment prefix for a given language."""
@@ -415,6 +505,12 @@ def stats():
         )
         
     console.print(progress_table)
+
+    # Check for updates
+    latest = get_latest_version()
+    current = get_current_version()
+    if latest and latest != current:
+        console.print(f"\n[bold yellow]There is a newer version of LeetHelix out ({latest}), it might have new challenges! Use 'leet --upgrade' to upgrade.[/bold yellow]")
 
 @app.command()
 def list():

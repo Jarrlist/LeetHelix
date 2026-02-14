@@ -1,0 +1,16 @@
+{
+    "id": "hello_world",
+    "title": "Hello World Fix",
+    "description": "Fix the print statement to output 'Hello, World!'",
+    "difficulty": "Easy",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "Basic Editing:\n1. Navigate with 'h', 'j', 'k', 'l'.\n2. Move to typo.\n3. Replace char: 'r' -> correct char.\n4. Or change text: 'c' -> type -> Esc.",
+    "tags": [
+        "edit_insert",
+        "edit_delete",
+        "movement_basic"
+    ]
+}

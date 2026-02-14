@@ -1,0 +1,15 @@
+{
+    "id": "select_split_comma",
+    "title": "Split on Comma",
+    "description": "Put each number on a new line.",
+    "difficulty": "Medium",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "1. Select the list content.\n2. 's' -> ','.\n3. 'r' -> Enter (replace comma with newline).",
+    "tags": [
+        "select_split",
+        "edit_replace"
+    ]
+}

@@ -1,0 +1,20 @@
+{
+    "id": "function_to_class",
+    "title": "Function to Class",
+    "description": "Convert 3 standalone functions into static methods of a Calculator class.",
+    "difficulty": "Hard",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "1. Select functions (e.g. 'v' then move down, or repeated x).\n2. Change 'calculate' to 'get' ('s' -> 'calculate' -> 'c').\n3. with multi select open line above all functions using ('O'), type '@staticmethod'.\n4. Refactor bodies: Use delete/change to simplify returns.\n5. Wrap in class: Select all lines ('x'), indent ('>'), go to top ('gg'), add 'class Calculator:'.",
+    "tags": [
+        "edit_change",
+        "select_regex",
+        "edit_insert",
+        "multicursor",
+        "select_line",
+        "edit_delete",
+        "edit_indent"
+    ]
+}

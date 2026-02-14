@@ -1,0 +1,15 @@
+{
+    "id": "rename_variable",
+    "title": "Rename Variables",
+    "description": "Rename 'd' to 'data' and 'x' to 'total' everywhere.",
+    "difficulty": "Medium",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "1. 's' to select.\n2. '\\bd\\b' (word boundary) to match 'd' only.\n3. Enter, then 'c' to change.\n\n'data, \n4. x is the same but word boundery is not needed",
+    "tags": [
+        "select_regex",
+        "edit_change"
+    ]
+}

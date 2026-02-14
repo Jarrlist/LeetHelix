@@ -1,0 +1,14 @@
+{
+    "id": "edit_replace_range",
+    "title": "Increment/Decrement",
+    "description": "Increment max_retries and decrement timeout_seconds.",
+    "difficulty": "Easy",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "1. Move to '3'. Press 'Ctrl-a' to increment.\n2. Move to '30'. Press 'Ctrl-x' to decrement.",
+    "tags": [
+        "edit_change"
+    ]
+}

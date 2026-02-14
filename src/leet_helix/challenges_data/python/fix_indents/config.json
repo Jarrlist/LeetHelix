@@ -1,0 +1,15 @@
+{
+    "id": "fix_indents",
+    "title": "Fix Indentation",
+    "description": "The indentation is messy. Fix it so the code runs.",
+    "difficulty": "Easy",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "Indentation commands:\n- '>' to indent selection.\n- '<' to unindent selection.\n- '=' to auto-format (requires lsp).\n- 'x' to select lines, 'Alt-s' to split into lines.",
+    "tags": [
+        "edit_indent",
+        "select_line"
+    ]
+}

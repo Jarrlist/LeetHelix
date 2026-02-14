@@ -1,0 +1,16 @@
+{
+    "id": "match_surround",
+    "title": "Match Surround",
+    "description": "Fix the list syntax: Add quotes to words and change () to [].",
+    "difficulty": "Medium",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "1. use C and w to select all words inside ()\n2. 'ms\"' to turn the words into strings \n3.- 'mr([' to replace () with [] v.",
+    "tags": [
+        "surround_add",
+        "surround_replace",
+        "select_object"
+    ]
+}

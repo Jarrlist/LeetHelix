@@ -1,0 +1,15 @@
+{
+    "id": "movement_long_jump",
+    "title": "Jump List",
+    "description": "Navigate to the middle of the file and change 'TARGET_VALUE' from 100 to 200.",
+    "difficulty": "Easy",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "1. Use '50%' to jump to the middle, or search with '/TARGET'.\n2. Use 'ciw' or 'r' to change the value.",
+    "tags": [
+        "movement_goto",
+        "edit_change"
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "id": "edit_case_toggle",
+    "title": "Toggle Case",
+    "description": "Capitalize the constant variable name 'max_retries'.",
+    "difficulty": "Easy",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "1. Select all lines, with x for example.\n2. Press '~' to toggle case (or Alt-` to force uppercase).",
+    "tags": [
+        "edit_case",
+        "select_basic"
+    ]
+}

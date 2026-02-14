@@ -1,0 +1,15 @@
+{
+    "id": "surround_delete_multicursor",
+    "title": "Unquote List",
+    "description": "Remove quotes from all items.",
+    "difficulty": "Medium",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "1. Select all items (e.g. 'mi[' -> 's' -> string regex).\n2. 'md\"' (match delete \").",
+    "tags": [
+        "surround_delete",
+        "multicursor"
+    ]
+}

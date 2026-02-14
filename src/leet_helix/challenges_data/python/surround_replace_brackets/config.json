@@ -1,0 +1,14 @@
+{
+    "id": "surround_replace_brackets",
+    "title": "Replace Brackets",
+    "description": "Change the returned tuple (parentheses) to a list (square brackets).",
+    "difficulty": "Easy",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "1. Move cursor inside '(x, y)'.\n2. Type 'mr([' (Match Replace '(' with '[').",
+    "tags": [
+        "surround_replace"
+    ]
+}

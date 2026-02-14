@@ -1,0 +1,16 @@
+{
+    "id": "surround_delete_quotes",
+    "title": "Delete Quotes",
+    "description": "Convert the list of strings into a list of integers.",
+    "difficulty": "Medium",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "1. Move inside the brackets.\n2. Press 'mi[' to select contents.\n3. Press 's\"' to select all quotes.\n4. Press 'd' to delete them.",
+    "tags": [
+        "surround_delete",
+        "select_object",
+        "select_regex"
+    ]
+}

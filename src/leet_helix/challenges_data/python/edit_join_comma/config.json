@@ -1,0 +1,15 @@
+{
+    "id": "edit_join_comma",
+    "title": "Join Lines",
+    "description": "Join the imports into a single line.",
+    "difficulty": "Medium",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "1. Select the lines.\n2. 'J' (join).\n3. You might need to add commas manually if not present.",
+    "tags": [
+        "edit_join",
+        "edit_insert"
+    ]
+}

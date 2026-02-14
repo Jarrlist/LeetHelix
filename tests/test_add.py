@@ -10,14 +10,29 @@ def test_add_command():
          patch("subprocess.run") as mock_run:
         
         # Mock user inputs
-        # Title, ID, Description, Difficulty, Extension
+        # Title, ID, Description, Language, Extension, Judge Mode
         mock_prompt.side_effect = [
             "Test Challenge", # Title
             "test_challenge", # ID
             "Description",    # Description
-            "Medium",         # Difficulty
+            "python",         # Language
             ".py",            # Extension
+            "exact",          # Judge Mode
+             "Medium",        # Difficulty (actually prompt order: Title, ID, Desc, Language, Ext, Judge, Difficulty? No, check main.py)
         ]
+        # Checking main.py order:
+        # Title, ID, Description, Language, Extension, Judge Mode, Difficulty (inside dict creation)
+        
+        mock_prompt.side_effect = [
+            "Test Challenge", # Title
+            "test_challenge", # ID
+            "Description",    # Description
+            "python",         # Language
+            ".py",            # Extension
+            "exact",          # Judge Mode
+            "Medium",         # Difficulty
+        ]
+
         
         # Confirm Pre-fill
         mock_confirm.return_value = True
@@ -37,6 +52,11 @@ def test_add_command():
         assert "Challenge 'Test Challenge' created successfully" in result.stdout
         
         # Verify file creation
-        challenge_path = CHALLENGES_DIR / "test_challenge.json"
-        assert challenge_path.exists()
-        challenge_path.unlink()
+        challenge_dir = CHALLENGES_DIR / "python" / "test_challenge"
+        assert challenge_dir.exists()
+        assert (challenge_dir / "config.json").exists()
+        assert (challenge_dir / "start.py").exists()
+        assert (challenge_dir / "goal.py").exists()
+        
+        import shutil
+        shutil.rmtree(challenge_dir)

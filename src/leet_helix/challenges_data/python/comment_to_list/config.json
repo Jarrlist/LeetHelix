@@ -1,0 +1,18 @@
+{
+    "id": "comment_to_list",
+    "title": "Convert Comments to List",
+    "description": "Convert the vertical list of comments into a single-line Python list named 'fruits'.",
+    "difficulty": "Medium",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "1. Select the list lines (e.g. 'vip' or 'x' then 'j').\n2. Remove comments ('s' -> '^# ' -> 'd').\n3. Surround words with quotes ('s' -> '\\w+' -> 'ms\"').\n4. Join everything into one line ('J').\n5. Replace spaces with commas ('s' -> ' ' -> 'c, ').\n6. Surround with brackets ('mi[') and add 'fruits = '.",
+    "tags": [
+        "edit_join",
+        "select_regex",
+        "multicursor",
+        "surround_add",
+        "edit_change"
+    ]
+}

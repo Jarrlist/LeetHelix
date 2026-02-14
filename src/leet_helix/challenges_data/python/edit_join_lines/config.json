@@ -1,0 +1,15 @@
+{
+    "id": "edit_join_lines",
+    "title": "Join Lines",
+    "description": "Join the list items into a single line list.",
+    "difficulty": "Medium",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "1. Select the lines.\n2. Press 'J' to join them.\n3. You might need to delete extra commas or spaces.",
+    "tags": [
+        "edit_join",
+        "select_line"
+    ]
+}

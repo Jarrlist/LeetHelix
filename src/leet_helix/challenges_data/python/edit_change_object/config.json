@@ -1,0 +1,15 @@
+{
+    "id": "edit_change_object",
+    "title": "Change Inside",
+    "description": "Clear the list contents.",
+    "difficulty": "Medium",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "1. Move inside the brackets [].\n2. 'mi[' (match inside brackets).\n3. 'c' (change) -> type nothing (or just 'd' to delete contents).",
+    "tags": [
+        "select_object",
+        "edit_change"
+    ]
+}

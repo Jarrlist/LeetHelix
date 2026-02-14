@@ -1,0 +1,17 @@
+{
+    "id": "rename_variable_simple",
+    "title": "Rename Variables (Simple)",
+    "description": "Rename 'user_score_history' to 'scores' and 'calculated_average_value' to 'average'.",
+    "difficulty": "Easy",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "To rename without typing the long name:\n1. Move cursor to variable.\n2. Select it: 'miw'.\n3. Set search register: '*'.\n4. Add next occurrence: 'n' (creates new selection).\n5. Repeat 'n' for all matches.\n6. Change all: 'c' -> type new name.",
+    "tags": [
+        "select_regex",
+        "edit_change",
+        "search_selection",
+        "multicursor"
+    ]
+}

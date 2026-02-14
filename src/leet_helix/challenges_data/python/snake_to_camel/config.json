@@ -1,0 +1,16 @@
+{
+    "id": "snake_to_camel",
+    "title": "Snake Case to Camel Case",
+    "description": "Convert all dictionary keys from snake_case to camelCase, leaving the variable name unchanged.",
+    "difficulty": "Easy",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "1. Select the dictionary (e.g. 'vip').\n2. Select keys only: s\"\\w+\":<enter>\n3. Select underscores inside keys: s_<enter>\n4. Delete underscores: d\n5. Toggle case: ~",
+    "tags": [
+        "edit_case",
+        "select_regex",
+        "multicursor"
+    ]
+}

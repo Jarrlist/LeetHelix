@@ -1,0 +1,17 @@
+{
+    "id": "search_select",
+    "title": "Search & Select",
+    "description": "Change all 'foo' to 'bar' using search selection.",
+    "difficulty": "Medium",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "Search & Select Workflow:\n1. Search: '/' -> 'foo' -> Enter.\n2. Enter Select Mode: 'v'.\n3. Select next matches: 'n' (adds to selection).\n4. Repeat 'n' until all are selected.\n5. Change: 'c' -> 'bar' -> Esc.",
+    "tags": [
+        "search_basic",
+        "search_next",
+        "edit_change",
+        "multicursor"
+    ]
+}

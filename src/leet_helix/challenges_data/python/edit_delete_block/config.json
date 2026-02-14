@@ -1,0 +1,15 @@
+{
+    "id": "edit_delete_block",
+    "title": "Delete Block",
+    "description": "Remove the entire 'debug' function.",
+    "difficulty": "Easy",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "1. Move to 'def debug'.\n2. 'maf' (match around function) to select it.\n3. 'd' to delete.",
+    "tags": [
+        "select_object",
+        "edit_delete"
+    ]
+}

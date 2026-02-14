@@ -1,0 +1,17 @@
+{
+    "id": "enumerate_align",
+    "title": "Enumerate and Align",
+    "description": "Add a rank field to each object starting from 1 and align the fields neatly.",
+    "difficulty": "Medium",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "1. Select the list (e.g. 'vip').\n2. s searches inside selection. Input \\{<enter>\n3. a to insert ' rank: ' after {\n4. <ctrl-r># inserts numbers\n5. Align with s \"<enter>& (aligns on starting quotes)",
+    "tags": [
+        "multicursor",
+        "select_regex",
+        "edit_insert",
+        "select_all"
+    ]
+}

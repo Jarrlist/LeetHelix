@@ -15,13 +15,59 @@ from .database import init_db, log_attempt, get_attempts
 app = typer.Typer()
 console = Console()
 
-CHALLENGES_DIR = pathlib.Path(__file__).parent / "challenges"
+CHALLENGES_DIR = pathlib.Path(__file__).parent / "challenges_data"
+
+def get_comment_prefix(language: str) -> str:
+    """Returns the comment prefix for a given language."""
+    if language in ["rust", "c", "cpp", "java", "javascript", "typescript", "go"]:
+        return "//"
+    elif language == "sql":
+        return "--"
+    else: # python, ruby, shell, etc.
+        return "#"
+
+def build_file_content(challenge: dict, content: str) -> str:
+    """Injects header and footer (tips) into the file content."""
+    language = challenge.get("language", "python")
+    comment_prefix = get_comment_prefix(language)
+    
+    header = f"{comment_prefix} {challenge['title']}\n"
+    header += f"{comment_prefix} Task: {challenge.get('description', '')}\n\n"
+    
+    footer = ""
+    if "tips" in challenge:
+        footer += "\n\n"
+        for line in challenge["tips"].splitlines():
+            footer += f"{comment_prefix} {line}\n"
+
+    return header + content + footer
 
 def load_challenges():
     challenges = []
-    for file in CHALLENGES_DIR.glob("*.json"):
-        with open(file, "r") as f:
-            challenges.append(json.load(f))
+    # Recursively find config.json files
+    for config_file in CHALLENGES_DIR.rglob("config.json"):
+        try:
+            with open(config_file, "r") as f:
+                challenge = json.load(f)
+            
+            # Resolve paths relative to the config file
+            challenge_dir = config_file.parent
+            start_path = challenge_dir / challenge.get("start_file", "start.txt")
+            goal_path = challenge_dir / challenge.get("goal_file", "goal.txt")
+            
+            challenge["start_path"] = start_path
+            challenge["goal_path"] = goal_path
+            challenge["dir_path"] = challenge_dir
+            
+            # For backward compatibility or convenience, we might want to read content if small
+            # But the requirement is to handle potential large files, so we stick to paths mostly.
+            # However, for 'list' and 'smart_select', we don't need content.
+            # For 'play', we do.
+            
+            challenges.append(challenge)
+        except Exception as e:
+            console.print(f"[red]Error loading challenge from {config_file}: {e}[/red]")
+
     return challenges
 
 def select_smart_challenge(challenges):
@@ -101,41 +147,102 @@ def play(challenge_id: str = typer.Argument(None, help="The ID of the challenge 
 
     console.print(f"[bold cyan]Starting Challenge: {selected_challenge['title']}[/bold cyan]")
     console.print(selected_challenge.get("description", "No description provided."))
-
+    
     # Prepare temp file
-    # Determine extension based on challenge or default to .py
-    # Ideally challenge json should have language/extension info
-    ext = selected_challenge.get("extension", ".py")
-    if not ext.startswith("."):
-        ext = "." + ext
+    start_path = selected_challenge.get("start_path")
+    goal_path = selected_challenge.get("goal_path")
+    
+    if not start_path or not start_path.exists():
+        console.print(f"[red]Start file not found: {start_path}[/red]")
+        return
         
-    with tempfile.NamedTemporaryFile(mode="w+", suffix=ext, delete=False) as tmp_file:
-        tmp_file.write(selected_challenge["start_text"])
-        tmp_file_path = tmp_file.name
+    if not goal_path or not goal_path.exists():
+         console.print(f"[red]Goal file not found: {goal_path}[/red]")
+         return
 
-    try:
-        start_time = time.time()
-        # Open in helix
-        if not open_editor(tmp_file_path):
-            return
-        end_time = time.time()
+    ext = start_path.suffix
         
-        # Read edited content
-        with open(tmp_file_path, "r") as f:
-            user_text = f.read()
+    with open(start_path, "r") as f:
+        start_content = f.read()
 
-        goal_text = selected_challenge["goal_text"]
-        
-        display_feedback(user_text, goal_text)
-        
-        is_correct = check_solution(user_text, goal_text)
-        duration = end_time - start_time
-        
-        # Log attempt to database
-        log_attempt(selected_challenge["id"], is_correct, duration)
+    with open(goal_path, "r") as f:
+        goal_content_raw = f.read()
 
-    finally:
-        pathlib.Path(tmp_file_path).unlink(missing_ok=True)
+    # Inject header/footer to both start and goal so they are comparable
+    formatted_start_content = build_file_content(selected_challenge, start_content)
+    formatted_goal_content = build_file_content(selected_challenge, goal_content_raw)
+
+    while True:
+        with tempfile.NamedTemporaryFile(mode="w+", suffix=ext, delete=False) as tmp_file:
+            tmp_file.write(formatted_start_content)
+            tmp_file_path = tmp_file.name
+
+        try:
+            start_time = time.time()
+            # Open in helix
+            if not open_editor(tmp_file_path):
+                return
+            end_time = time.time()
+            
+            # Read edited content
+            with open(tmp_file_path, "r") as f:
+                user_text = f.read()
+
+            judge_mode = selected_challenge.get("judge_mode", "exact")
+            is_correct = check_solution(user_text, formatted_goal_content, judge_mode)
+            duration = end_time - start_time
+            
+            # Log attempt to database
+            log_attempt(selected_challenge["id"], is_correct, duration)
+
+            if is_correct:
+                display_feedback(user_text, formatted_goal_content, judge_mode)
+                console.print(f"[bold green]🎉 Success! You completed it in {duration:.2f}s[/bold green]")
+            else:
+                display_feedback(user_text, formatted_goal_content, judge_mode)
+                console.print(f"[bold red]❌ Failed. Duration: {duration:.2f}s[/bold red]")
+            
+            console.print("\n[bold]Next Challenge: j | Redo: k | Exit: esc/q[/bold]")
+            
+            # Wait for keypress
+            while True:
+                key = typer.getchar()
+                if key.lower() == 'j':
+                    # Find next challenge (for now just random again or handle externally)
+                    # Ideally we would loop the whole play function but for now let's just break to return
+                    # and maybe in future we make play() loop over challenges.
+                    # As requested: "next challenge: j". 
+                    # Recursively calling play() or returning to allow caller to loop?
+                    # Since play takes an ID, it's a bit tricky. 
+                    # Let's just exit this run and let the user run it again or pick a new one.
+                    # But the user asked for "next challenge".
+                    # Let's try to pick a new one.
+                    
+                    # We need to reload challenges and pick a new one.
+                    # Simpler: just clear screen and re-run selection logic if we refactor.
+                    # For now, let's just return and tell user "Loading next..."
+                    
+                    # Actually, better:
+                    # If we wrap the challenge selection logic in a loop inside `play`, we can do it.
+                    # But `play` is a command.
+                    # Let's just return and implement "next" logic in a loop in main if arguments are empty.
+                    # But `play` has `challenge_id` arg.
+                    
+                    # Let's just do a simple hack: Call `play` again without args.
+                    console.print("[green]Loading next challenge...[/green]")
+                    play(None) 
+                    return
+                    
+                elif key.lower() == 'k':
+                    # Redo: just break the inner loop, ensuring we re-write the temp file and open editor
+                    break 
+                elif key.lower() in ['q', '\x1b']: # ESC is \x1b
+                    console.print("Exiting.")
+                    return
+                # else: ignore
+
+        finally:
+            pathlib.Path(tmp_file_path).unlink(missing_ok=True)
 
 @app.command()
 def add():
@@ -146,10 +253,18 @@ def add():
     default_id = title.lower().replace(" ", "_")
     challenge_id = typer.prompt("ID", default=default_id)
     description = typer.prompt("Description")
-    difficulty = typer.prompt("Difficulty", default="Medium")
-    extension = typer.prompt("File Extension", default=".py")
+    
+    # Language prompt to organize folders
+    language = typer.prompt("Language (e.g. python, rust, text)", default="python")
+    
+    default_ext = ".py" if language == "python" else ".txt"
+    if language == "rust": default_ext = ".rs"
+    
+    extension = typer.prompt("File Extension", default=default_ext)
     if not extension.startswith("."):
         extension = "." + extension
+
+    judge_mode = typer.prompt("Judge Mode (exact, ignore_whitespace, ast)", default="exact")
 
     # 1. Goal Text (The correct solution)
     console.print("[yellow]Step 1: Enter the GOAL text (the correct solution). Opening editor...[/yellow]")
@@ -188,25 +303,58 @@ def add():
          start_text = f.read()
     pathlib.Path(tf_path_start).unlink(missing_ok=True)
 
-    challenge_data = {
+    # Create directory structure
+    challenge_dir = CHALLENGES_DIR / language / challenge_id
+    try:
+        challenge_dir.mkdir(parents=True, exist_ok=True)
+    except Exception as e:
+        console.print(f"[red]Error creating directory {challenge_dir}: {e}[/red]")
+        return
+
+    start_filename = f"start{extension}"
+    goal_filename = f"goal{extension}"
+    
+    config_data = {
         "id": challenge_id,
         "title": title,
         "description": description,
-        "difficulty": difficulty,
-        "extension": extension,
-        "start_text": start_text,
-        "goal_text": goal_text
+        "difficulty": typer.prompt("Difficulty", default="Medium"),
+        "language": language,
+        "judge_mode": judge_mode,
+        "start_file": start_filename,
+        "goal_file": goal_filename
     }
     
-    file_path = CHALLENGES_DIR / f"{challenge_id}.json"
-    if file_path.exists():
-        if not typer.confirm("Challenge already exists. Overwrite?"):
+    config_path = challenge_dir / "config.json"
+    if config_path.exists():
+        if not typer.confirm(f"Challenge '{challenge_id}' already exists. Overwrite?"):
             return
 
-    with open(file_path, "w") as f:
-        json.dump(challenge_data, f, indent=4)
+    with open(config_path, "w") as f:
+        json.dump(config_data, f, indent=4)
         
-    console.print(f"[green]Challenge '{title}' created successfully at {file_path}[/green]")
+    # Prepare content using the shared helper to ensure consistency
+    # Note: build_file_content requires the challenge dict
+    # We construct a temporary one or pass relevant keys
+    
+    # Actually, build_file_content expects a 'challenge' dict with title, description, language, tips
+    # config_data has all except 'tips' (unless we added prompts for tips, which we didn't yet)
+    # config_data: id, title, description, difficulty, language, judge_mode, start_file, goal_file
+    
+    final_start_content = build_file_content(config_data, start_text)
+    final_goal_content = build_file_content(config_data, goal_text)
+
+    # However, for 'add', we want to save the RAW content to the files (start.py, goal.py)
+    # without the headers/footers, because 'play' injects them dynamically now.
+    # So we should write just start_text and goal_text!
+    
+    with open(challenge_dir / start_filename, "w") as f:
+        f.write(start_text)
+        
+    with open(challenge_dir / goal_filename, "w") as f:
+        f.write(goal_text)
+        
+    console.print(f"[green]Challenge '{title}' created successfully at {challenge_dir}[/green]")
 
 @app.command()
 def stats():
@@ -248,36 +396,25 @@ Unique Challenges Solved: {len(solved_challenges)}
 @app.command()
 def list():
     """List all available challenges."""
-    table = Table("ID", "Title", "Difficulty")
+    challenges = load_challenges()
+    table = Table("ID", "Title", "Difficulty", "Language")
     
-    for file in CHALLENGES_DIR.glob("*.json"):
-         with open(file, "r") as f:
-            data = json.load(f)
-            table.add_row(data["id"], data["title"], data.get("difficulty", "Unknown"))
+    for c in challenges:
+        table.add_row(
+            c["id"], 
+            c["title"], 
+            c.get("difficulty", "Unknown"), 
+            c.get("language", "Unknown")
+        )
             
     console.print(table)
 
 @app.command()
 def init():
-    """Initialize the database and challenges directory."""
+    """Initialize the database."""
     init_db()
-    
-    # Create example challenge if directory is empty
-    if not any(CHALLENGES_DIR.iterdir()):
-        example_challenge = {
-            "id": "hello_world",
-            "title": "Hello World Fix",
-            "description": "Fix the print statement to correctly output 'Hello, World!'",
-            "difficulty": "Easy",
-            "start_text": "print('Helo, Wolrd!')",
-            "goal_text": "print('Hello, World!')",
-            "extension": ".py"
-        }
-        with open(CHALLENGES_DIR / "hello_world.json", "w") as f:
-            json.dump(example_challenge, f, indent=4)
-        console.print("[green]Created example challenge: hello_world.json[/green]")
-    else:
-        console.print("[yellow]Challenges directory not empty. Skipping example creation.[/yellow]")
+    # Migration or check logic could go here, but for now we just init DB.
+    console.print("[green]Database initialized.[/green]")
 
 if __name__ == "__main__":
     app()

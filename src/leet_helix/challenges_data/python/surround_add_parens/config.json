@@ -1,0 +1,15 @@
+{
+    "id": "surround_add_parens",
+    "title": "Add Parentheses",
+    "description": "Wrap 'base + multiplier' in parentheses to fix the order of operations.",
+    "difficulty": "Medium",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "1. Move to and select 'base' using gw.\n 2. expand selection using v and repeated w \n 3. 'ms(' (match surround with parens).",
+    "tags": [
+        "surround_add",
+        "select_basic"
+    ]
+}

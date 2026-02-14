@@ -1,0 +1,16 @@
+{
+    "id": "swap_blocks",
+    "title": "Swap Code Blocks",
+    "description": "Swap the two functions so 'process_data' comes before 'main'.",
+    "difficulty": "Easy",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "tips": "Swapping strategies:\n1. Select 'main' (visual mode 'v' or 'x' for lines).\n2. Delete it ('d').\n3. Move to bottom.\n4. Paste ('p').\n5. Alternatively: Select, 'y' (yank), go to dest, 'p', go back, select original, 'd'.",
+    "tags": [
+        "edit_yank_paste",
+        "edit_delete",
+        "select_line"
+    ]
+}

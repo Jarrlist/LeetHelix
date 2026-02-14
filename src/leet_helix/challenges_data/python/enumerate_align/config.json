@@ -1,17 +1,22 @@
 {
     "id": "enumerate_align",
     "title": "Enumerate and Align",
-    "description": "Add a rank field to each object starting from 1 and align the fields neatly.",
+    "description": "1. Add a rank field in the begining of all list elements \n 2. \"rank\": 1 for the first row, \"rank\": 2 for the next one etc. \n 3. align the fields for all the elements",
     "difficulty": "Medium",
     "language": "python",
-    "judge_mode": "ast",
+    "judge_mode": "exact",
     "start_file": "start.py",
+    "goal_files": [
+        "goal.py",
+        "goal_alt.py"
+    ],
     "goal_file": "goal.py",
-    "tips": "1. Select the list (e.g. 'vip').\n2. s searches inside selection. Input \\{<enter>\n3. a to insert ' rank: ' after {\n4. <ctrl-r># inserts numbers\n5. Align with s \"<enter>& (aligns on starting quotes)",
+    "tips": "1. Select the list using x or mi[.\n2. select { using s\\{<enter> \n3. a to insert \"rank:\" after {\n4. <ctrl-r># inserts numbers\n5. Reselect all rows with x and align with s \"<enter>& (aligns on starting quotes)",
     "tags": [
         "multicursor",
         "select_regex",
         "edit_insert",
         "select_all"
-    ]
+    ],
+    "author_time": 39.0
 }

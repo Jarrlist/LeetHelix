@@ -131,8 +131,8 @@ We need challenges for these Helix features:
 
 We use a standardized list of tags to categorize challenges by the Helix features they test.
 
-*   **Source of Truth**: Refer to `HelixLabels.md` in the project root.
-*   **Selection**: Always verify tags against that file. Do not invent new tags without updating `HelixLabels.md` first.
+*   **Source of Truth**: Refer to `docs/HelixLabels.md` in the project root.
+*   **Selection**: Always verify tags against that file. Do not invent new tags without updating `docs/HelixLabels.md` first.
 
 **Common Tags:**
 *   `movement_basic`, `movement_word`, `movement_find`
@@ -144,14 +144,14 @@ We use a standardized list of tags to categorize challenges by the Helix feature
 
 ## 📚 Resources
 
-*   **`HelixFeatures.md`**: (Project Root) A dump of Helix features and documentation. Use this to understand *what* is possible.
-*   **`HelixLabels.md`**: (Project Root) The official registry of tags. Use this to label your challenges.
+*   **`docs/HelixFeatures.md`**: (Project Root) A dump of Helix features and documentation. Use this to understand *what* is possible.
+*   **`docs/HelixLabels.md`**: (Project Root) The official registry of tags. Use this to label your challenges.
 *   **`tutor` files**: Look for `tutor` or `helixTutor.txt` in the repo for inspiration on teaching sequences.
 
 ## 🚀 Workflow for Agents
 
 1.  **Plan**: Identify a Helix feature to teach (e.g., "Multiple Cursors").
-2.  **Consult**: Check `HelixLabels.md` for the correct tag (e.g., `multicursor`).
+2.  **Consult**: Check `docs/HelixLabels.md` for the correct tag (e.g., `multicursor`).
 3.  **Draft**: Create the `start` and `goal` code.
     *   *Tip*: For `multicursor`, ensure there are aligned patterns in `start.py` that make vertical selection or regex selection obvious.
 4.  **Configure**: Create `config.json`.

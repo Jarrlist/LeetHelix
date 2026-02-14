@@ -7,11 +7,12 @@
     "judge_mode": "ast",
     "start_file": "start.py",
     "goal_file": "goal.py",
-    "tips": "To rename without typing the long name:\n1. Move cursor to variable.\n2. Select it: 'miw'.\n3. Set search register: '*'.\n4. Add next occurrence: 'n' (creates new selection).\n5. Repeat 'n' for all matches.\n6. Change all: 'c' -> type new name.",
+    "tips": "1. Select all lines, for example with 10x.\n2. Select variable using s user_sc...<enter> .\n3. c to remove and type the new name \n4. Repeat for the other variable \n extra tip, for long variables like this it is easier to only type the start \n of the variable name in step 2 and then select the rest using ve",
     "tags": [
         "select_regex",
         "edit_change",
         "search_selection",
         "multicursor"
-    ]
+    ],
+    "author_time": 24.71
 }

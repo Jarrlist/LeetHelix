@@ -10,5 +10,6 @@
     "tips": "1. Move to '3'. Press 'Ctrl-a' to increment.\n2. Move to '30'. Press 'Ctrl-x' to decrement.",
     "tags": [
         "edit_change"
-    ]
+    ],
+    "author_time": 8.6
 }

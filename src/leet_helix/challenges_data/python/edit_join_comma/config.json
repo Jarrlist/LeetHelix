@@ -1,15 +1,16 @@
 {
     "id": "edit_join_comma",
     "title": "Join Lines",
-    "description": "Join the imports into a single line.",
+    "description": "Join the imports into a single line, commaseperated.",
     "difficulty": "Medium",
     "language": "python",
     "judge_mode": "ast",
     "start_file": "start.py",
     "goal_file": "goal.py",
-    "tips": "1. Select the lines.\n2. 'J' (join).\n3. You might need to add commas manually if not present.",
+    "tips": "1. Select the lines and Join them using x and J\n2. select from to the second \"import\" to the using ;vbbbb \n3. select import simport<enter> and replace with , using c",
     "tags": [
         "edit_join",
         "edit_insert"
-    ]
+    ],
+    "author_time": 11.3
 }

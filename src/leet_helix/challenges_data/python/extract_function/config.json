@@ -7,9 +7,10 @@
     "judge_mode": "ast",
     "start_file": "start.py",
     "goal_file": "goal.py",
-    "tips": "Standard editing:\n- 'y' to yank (copy).\n- 'p' to paste.\n- 'c' to change text.\n- 'd' to delete.\n- use 'v' to select text manually.",
+    "tips": "1. Go to the start of the function signature area_circle \n 2. yank it using Wy \n Go to char after base_area = and past using p \n Delete the rest of the line using ;vgld ",
     "tags": [
         "edit_yank_paste",
         "edit_change"
-    ]
+    ],
+    "author_time": 7.85
 }

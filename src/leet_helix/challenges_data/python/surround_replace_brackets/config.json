@@ -7,8 +7,9 @@
     "judge_mode": "ast",
     "start_file": "start.py",
     "goal_file": "goal.py",
-    "tips": "1. Move cursor inside '(x, y)'.\n2. Type 'mr([' (Match Replace '(' with '[').",
+    "tips": "1. Move cursor inside '(x, y), fx fx (or fx Alt-.) is quick in this situation'.\n2. Type 'mr([' (Match Replace '(' with '[').",
     "tags": [
         "surround_replace"
-    ]
+    ],
+    "author_time": 5.53
 }

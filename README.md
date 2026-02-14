@@ -8,7 +8,7 @@ Practice your Helix editor skills with code challenges.
 You can install directly from GitHub without cloning:
 
 ```bash
-pip install git+https://github.com/jarrlist/leet-helix.git
+pip install git+https://github.com/Jarrlist/LeetHelix.git
 ```
 
 ### For Developers

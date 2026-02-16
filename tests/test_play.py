@@ -1,7 +1,7 @@
 import json
 from unittest.mock import patch, MagicMock
 from typer.testing import CliRunner
-from leet_helix.main import app, CHALLENGES_DIR
+from leet_helix.cfg import app, CHALLENGES_DIR
 from sqlmodel import create_engine, SQLModel
 import pytest
 

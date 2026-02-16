@@ -1,7 +1,6 @@
-import pytest
 from datetime import datetime, timedelta, timezone
 from unittest.mock import MagicMock
-from leet_helix.main import select_smart_challenge
+from leet_helix.challenges import select_smart_challenge
 
 def test_select_smart_challenge_never_attempted(monkeypatch):
     challenges = [
@@ -10,7 +9,7 @@ def test_select_smart_challenge_never_attempted(monkeypatch):
     ]
     
     # Mock database returning no attempts
-    monkeypatch.setattr("leet_helix.main.get_attempts", lambda: [])
+    monkeypatch.setattr("leet_helix.app.get_attempts", lambda: [])
         
     selected = select_smart_challenge(challenges)
     assert selected in challenges
@@ -34,7 +33,7 @@ def test_select_smart_challenge_prioritize_failed(monkeypatch):
     
     attempts = [c1_attempt, c2_attempt]
     
-    monkeypatch.setattr("leet_helix.main.get_attempts", lambda: attempts)
+    monkeypatch.setattr("leet_helix.challenges.get_attempts", lambda: attempts)
     
     # Should pick c2 because it was failed
     selected = select_smart_challenge(challenges)
@@ -63,7 +62,7 @@ def test_select_smart_challenge_prioritize_oldest_solved(monkeypatch):
     
     attempts = [c1_attempt, c2_attempt]
     
-    monkeypatch.setattr("leet_helix.main.get_attempts", lambda: attempts)
+    monkeypatch.setattr("leet_helix.challenges.get_attempts", lambda: attempts)
     
     # Should pick c1 because it was solved longest ago
     selected = select_smart_challenge(challenges)

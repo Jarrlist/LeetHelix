@@ -1,3 +1,5 @@
+"""This file encapsulates logic to check solutions to the challenges.""" 
+
 import difflib
 import ast
 from rich.console import Console

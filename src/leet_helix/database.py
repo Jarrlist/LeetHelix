@@ -4,6 +4,8 @@ import pathlib
 import os
 import sys
 
+from .cfg import sqlite_file_name 
+
 def now_utc():
     return datetime.now(timezone.utc)
 
@@ -31,22 +33,21 @@ def get_config_dir() -> pathlib.Path:
             return pathlib.Path(xdg_config) / app_name
         return pathlib.Path.home() / ".config" / app_name
 
-sqlite_file_name = "leet_helix.db"
+
 config_dir = get_config_dir()
 DB_PATH = config_dir / sqlite_file_name
+
+sqlite_url = f"sqlite:///{DB_PATH}"
+engine = create_engine(sqlite_url)
 
 # Ensure the directory exists
 try:
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
-except Exception as e:
+except Exception:
     # Fallback to home directory if permission denied or other error
     print(f"Warning: Could not create config dir at {DB_PATH.parent}. Using ~/.leet_helix instead.")
     DB_PATH = pathlib.Path.home() / ".leet_helix" / sqlite_file_name
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
-
-sqlite_url = f"sqlite:///{DB_PATH}"
-
-engine = create_engine(sqlite_url)
 
 def create_db_and_tables():
     SQLModel.metadata.create_all(engine)

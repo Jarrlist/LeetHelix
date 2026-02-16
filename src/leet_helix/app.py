@@ -169,27 +169,6 @@ def play(challenge_id: str = typer.Argument(None, help="The ID of the challenge 
             while True:
                 key = typer.getchar()
                 if key.lower() == 'j':
-                    # Find next challenge (for now just random again or handle externally)
-                    # Ideally we would loop the whole play function but for now let's just break to return
-                    # and maybe in future we make play() loop over challenges.
-                    # As requested: "next challenge: j". 
-                    # Recursively calling play() or returning to allow caller to loop?
-                    # Since play takes an ID, it's a bit tricky. 
-                    # Let's just exit this run and let the user run it again or pick a new one.
-                    # But the user asked for "next challenge".
-                    # Let's try to pick a new one.
-                    
-                    # We need to reload challenges and pick a new one.
-                    # Simpler: just clear screen and re-run selection logic if we refactor.
-                    # For now, let's just return and tell user "Loading next..."
-                    
-                    # Actually, better:
-                    # If we wrap the challenge selection logic in a loop inside `play`, we can do it.
-                    # But `play` is a command.
-                    # Let's just return and implement "next" logic in a loop in main if arguments are empty.
-                    # But `play` has `challenge_id` arg.
-                    
-                    # Let's just do a simple hack: Call `play` again without args.
                     console.print("[green]Loading next challenge...[/green]")
                     play(None) 
                     return
@@ -246,9 +225,6 @@ def stats():
     for a in attempts:
         attempts_by_id.setdefault(a.challenge_id, []).append(a)
     
-    # We want to show all challenges, or at least all attempted ones?
-    # User said: "shows if you have ever compleated a test"
-    # It's nicer to show all available challenges so they know what's left.
     
     # Sort challenges by id for display
     sorted_challenges = sorted(challenges, key=lambda x: x["id"])
@@ -343,12 +319,6 @@ def get_current_version():
 
 def get_latest_version():
     try:
-        # We need the raw file content to read the version string.
-        # Convert the repo URL to the raw content URL for pyproject.toml on the main branch.
-        # From: https://github.com/User/Repo.git
-        # To:   https://raw.githubusercontent.com/User/Repo/main/pyproject.toml
-        # Note: If the repo is private, this will fail without a token.
-        
         # Remove .git suffix if present
         repo_base = REPO_URL[:-4] if REPO_URL.endswith(".git") else REPO_URL
         raw_url = repo_base.replace("github.com", "raw.githubusercontent.com") + "/main/pyproject.toml"
@@ -387,11 +357,6 @@ def upgrade_package(force: bool = False):
             return
         console.print(f"[yellow]Force reinstalling version {current}...[/yellow]")
     else:
-        # Check if latest is actually newer than current
-        # Simple string comparison might fail for complex versions, but for now it's okay?
-        # Better to use packaging.version if available, but we don't have it in dependencies?
-        # We can assume standard versioning.
-        # If current > latest (e.g. dev version), we shouldn't downgrade.
         try:
             # simple split check
             l_parts = [int(x) for x in latest.split('.')]

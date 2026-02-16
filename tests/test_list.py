@@ -1,6 +1,6 @@
 from typer.testing import CliRunner
 from unittest.mock import patch
-from leet_helix.main import app
+from leet_helix.cfg import app
 
 runner = CliRunner()
 
@@ -23,9 +23,9 @@ def test_list_command():
         }
     ]
     
-    with patch("leet_helix.main.load_challenges", return_value=challenges), \
-         patch("leet_helix.main.get_attempts", return_value=[]), \
-         patch("leet_helix.main.init_db"):
+    with patch("leet_helix.app.load_challenges", return_value=challenges), \
+        patch("leet_helix.app.get_attempts", return_value=[]), \
+        patch("leet_helix.app.init_db"):
         
         result = runner.invoke(app, ["list"])
         

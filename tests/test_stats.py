@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 runner = CliRunner()
 
 def test_stats_empty():
-    with patch("leet_helix.main.get_attempts", return_value=[]):
+    with patch("leet_helix.app.get_attempts", return_value=[]):
         result = runner.invoke(app, ["stats"])
         assert result.exit_code == 0
         assert "No attempts recorded yet" in result.stdout
@@ -18,7 +18,7 @@ def test_stats_with_data():
         MagicMock(challenge_id="c2", is_correct=False, duration=10.0, timestamp=now),
     ]
     
-    with patch("leet_helix.main.get_attempts", return_value=attempts):
+    with patch("leet_helix.app.get_attempts", return_value=attempts):
         result = runner.invoke(app, ["stats"])
         assert result.exit_code == 0
         assert "Recent Activity" in result.stdout

@@ -3,7 +3,7 @@ import tempfile
 import time
 import subprocess
 from importlib.metadata import version, PackageNotFoundError
-import urllib
+import urllib.request
 import re
 import sys
 
@@ -333,9 +333,8 @@ def get_latest_version():
             if match:
                 return match.group(1)
             return None
-    except Exception:
-        # Silently fail or return None, but maybe useful to know why if debugging
-        # console.print(f"[dim]Debug: failed to check version: {e}[/dim]")
+    except Exception as e:
+        console.print(f"[yellow]Could not check for updates: {e}[/yellow]")
         return None
 
 

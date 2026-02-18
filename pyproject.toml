@@ -12,8 +12,10 @@ dependencies = [
     "rich",
     "sqlmodel",
     "sqlite-utils",
-    "pytest",
 ]
+
+[project.optional-dependencies]
+test = ["pytest"]
 
 [project.scripts]
 leet = "leet_helix.main:app"

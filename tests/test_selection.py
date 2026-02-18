@@ -9,7 +9,7 @@ def test_select_smart_challenge_never_attempted(monkeypatch):
     ]
     
     # Mock database returning no attempts
-    monkeypatch.setattr("leet_helix.app.get_attempts", lambda: [])
+    monkeypatch.setattr("leet_helix.challenges.get_attempts", lambda: [])
         
     selected = select_smart_challenge(challenges)
     assert selected in challenges

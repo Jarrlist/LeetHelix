@@ -7,7 +7,7 @@
     "judge_mode": "ast",
     "start_file": "start.py",
     "goal_file": "goal.py",
-    "tips": "Swapping strategies:\n1. Select 'main' (visual mode 'v' or 'x' for lines).\n2. Delete it ('d').\n3. Move to bottom.\n4. Paste ('p').\n5. Alternatively: Select, 'y' (yank), go to dest, 'p', go back, select original, 'd'.",
+    "tips": "1. Select 'main' using xxx, 3x or maf.\n2. Delete it using d\n3. Move to bottom.\n4. Paste p.",
     "tags": [
         "edit_yank_paste",
         "edit_delete",

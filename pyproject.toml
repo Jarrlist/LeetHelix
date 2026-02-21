@@ -12,6 +12,7 @@ dependencies = [
     "rich",
     "sqlmodel",
     "sqlite-utils",
+    "pyntercept==0.0.5"
 ]
 
 [project.optional-dependencies]

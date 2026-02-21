@@ -51,8 +51,8 @@ def play(challenge_id: str = typer.Argument(None, help="The ID of the challenge 
         # Assuming filename (without .json) is challenge_id
         selected_challenge = next((c for c in challenges if c["id"] == challenge_id), None)
         if not selected_challenge:
-             console.print(f"[red]Challenge with ID {challenge_id} not found![/red]")
-             return
+            console.print(f"[red]Challenge with ID {challenge_id} not found![/red]")
+            return
     else:
         selected_challenge = select_smart_challenge(challenges)
 
@@ -68,8 +68,8 @@ def play(challenge_id: str = typer.Argument(None, help="The ID of the challenge 
         return
     
     if not goal_paths:
-         console.print(f"[red]No goal files found for challenge {selected_challenge['id']}[/red]")
-         return
+        console.print(f"[red]No goal files found for challenge {selected_challenge['id']}[/red]")
+        return
 
     ext = start_path.suffix
         
@@ -100,7 +100,8 @@ def play(challenge_id: str = typer.Argument(None, help="The ID of the challenge 
         try:
             start_time = time.time()
             # Open in helix
-            if not open_editor(tmp_file_path):
+            input_data = open_editor(tmp_file_path)
+            if not input_data:
                 return
             end_time = time.time()
             

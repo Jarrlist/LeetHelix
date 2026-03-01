@@ -1,0 +1,21 @@
+{
+    "id": "buffer_copy_paste",
+    "title": "Buffer Management",
+    "description": "Copy code from multiple files into the current file using buffer commands.",
+    "difficulty": "Medium",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal.py",
+    "extra_files": [
+        "parser_utils.py",
+        "config_loader.py"
+    ],
+    "tips": "1. Open file: ':o parser_utils.py'.\n2. Select function: Use 'map' or 'maf' to select paragraph.\n3. Yank: 'y'.\n4. go to previous buffer: ':previous-buffer'.\n5. Paste: 'p'.\n6. Repeat for config_loader.py.",
+    "tags": [
+        "buffer_open",
+        "buffer_switch",
+        "edit_yank_paste"
+    ],
+    "author_time": 39.2
+}

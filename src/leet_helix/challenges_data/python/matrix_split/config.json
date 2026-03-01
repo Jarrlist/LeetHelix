@@ -1,0 +1,25 @@
+{
+    "id": "matrix_split",
+    "title": "Matrix Ops Split",
+    "description": "Refactor code: Move 'dot_product' & 'transpose' OUT to 'math_lib.py', and move 'sigmoid' IN from 'math_lib.py'.",
+    "difficulty": "Hard",
+    "language": "python",
+    "judge_mode": "ast",
+    "start_file": "start.py",
+    "goal_file": "goal_main.py",
+    "main_file_name": "matrix_processor.py",
+    "extra_files": [
+        "math_lib.py"
+    ],
+    "validation": {
+        "matrix_processor.py": "goal_main.py",
+        "math_lib.py": "goal_lib.py"
+    },
+    "tips": "1. Open split: ':vs math_lib.py'.\n2. Use '<space> w h/l' to jump between splits.\n3. Move 'dot_product' & 'transpose' to the lib file.\n4. Move 'sigmoid' from the lib file to the main file.\n5. Save and quit from both files :wq",
+    "tags": [
+        "window_split",
+        "window_move",
+        "edit_yank_paste"
+    ],
+    "author_time": 50.2
+}

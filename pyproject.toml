@@ -13,6 +13,7 @@ dependencies = [
     "sqlmodel",
     "sqlite-utils",
     "pytest",
+    "pyntercept==0.0.21",
 ]
 
 [project.scripts]

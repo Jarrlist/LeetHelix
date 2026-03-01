@@ -100,7 +100,8 @@ def play(challenge_id: str = typer.Argument(None, help="The ID of the challenge 
         try:
             start_time = time.time()
             # Open in helix
-            if not open_editor(tmp_file_path):
+            input_data = open_editor(tmp_file_path)
+            if input_data is None:
                 return
             end_time = time.time()
             

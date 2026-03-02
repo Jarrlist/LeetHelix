@@ -55,11 +55,23 @@ def load_challenges():
             
             goal_paths = [challenge_dir / gf for gf in goal_files]
             
+            # Handle extra files (for multi-file challenges)
+            extra_files = challenge.get("extra_files", [])
+            extra_file_paths = [challenge_dir / ef for ef in extra_files]
+
+            # Handle multi-file validation
+            validation = challenge.get("validation", {})
+            validation_map = {}
+            for filename, goal_filename in validation.items():
+                validation_map[filename] = challenge_dir / goal_filename
+
             challenge["start_path"] = start_path
             challenge["goal_paths"] = goal_paths
             # Keep goal_path as the primary one for convenience/back-compat
             challenge["goal_path"] = goal_paths[0] if goal_paths else None
             challenge["dir_path"] = challenge_dir
+            challenge["extra_file_paths"] = extra_file_paths
+            challenge["validation_map"] = validation_map
             
             # For backward compatibility or convenience, we might want to read content if small
             # But the requirement is to handle potential large files, so we stick to paths mostly.

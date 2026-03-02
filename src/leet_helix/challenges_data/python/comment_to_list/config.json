@@ -7,7 +7,7 @@
     "judge_mode": "ast",
     "start_file": "start.py",
     "goal_file": "goal.py",
-    "tips": "1. Select the list lines (e.g. 'vip' or 'x' then 'j').\n2. Remove comments ('s' -> '^# ' -> 'd').\n3. Surround words with quotes ('s' -> '\\w+' -> 'ms\"').\n4. Join everything into one line ('J').\n5. Replace spaces with commas ('s' -> ' ' -> 'c, ').\n6. Surround with brackets ('mi[') and add 'fruits = '.",
+    "tips": "1a. Select all the comments .\n2a. Remove comments with s#<enter> and delete it and the whitespace dd \n1b. Create multi cursor on all comments with C \n2b. Uncomment the lines with Ctrl-c \n3. Surround words with quotes w then ms\".\n4. Join everything into one line using J.\n5. Replace spaces with commas x then s<space><enter> then c,<space> .\n6. Surround with brackets using x then ms[ .\n7. Jump to start of line using gh then add fruits = in front",
     "tags": [
         "edit_join",
         "select_regex",

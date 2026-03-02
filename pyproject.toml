@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "leet-helix"
-version = "0.2.1"
+version = "0.2.4"
 description = "Practice editing in Helix"
 authors = [{name = "User"}]
 dependencies = [
@@ -12,9 +12,11 @@ dependencies = [
     "rich",
     "sqlmodel",
     "sqlite-utils",
-    "pytest",
     "pyntercept==0.0.21",
 ]
+
+[project.optional-dependencies]
+test = ["pytest"]
 
 [project.scripts]
 leet = "leet_helix.main:app"

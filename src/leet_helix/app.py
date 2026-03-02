@@ -2,6 +2,7 @@ import pathlib
 import tempfile
 import time
 import subprocess
+import shutil
 from importlib.metadata import version, PackageNotFoundError
 import urllib.request
 import re
@@ -93,11 +94,22 @@ def play(challenge_id: str = typer.Argument(None, help="The ID of the challenge 
     # formatted_goal_content is no longer single, we have a list
 
     while True:
-        with tempfile.NamedTemporaryFile(mode="w+", suffix=ext, delete=False) as tmp_file:
-            tmp_file.write(formatted_start_content)
-            tmp_file_path = tmp_file.name
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_dir_path = pathlib.Path(tmp_dir)
+            
+            # 1. Main file
+            main_file_name = selected_challenge.get("main_file_name", f"challenge{ext}")
+            tmp_file_path = tmp_dir_path / main_file_name
+            
+            with open(tmp_file_path, "w") as f:
+                f.write(formatted_start_content)
+            
+            # 2. Extra files
+            for extra_path in selected_challenge.get("extra_file_paths", []):
+                if extra_path.exists():
+                    dest_path = tmp_dir_path / extra_path.name
+                    shutil.copy(extra_path, dest_path)
 
-        try:
             start_time = time.time()
             # Open in helix
             input_data = open_editor(tmp_file_path)
@@ -106,20 +118,67 @@ def play(challenge_id: str = typer.Argument(None, help="The ID of the challenge 
             end_time = time.time()
             
             # Read edited content
-            with open(tmp_file_path, "r") as f:
-                user_text = f.read()
+            if tmp_file_path.exists():
+                with open(tmp_file_path, "r") as f:
+                    user_text = f.read()
+            else:
+                user_text = ""
 
             judge_mode = selected_challenge.get("judge_mode", "exact")
             
             # Check against ALL goals
             is_correct = False
             matching_goal_content = None
+            validation_failures = []
+
+            # Multi-file validation logic
+            validation_map = selected_challenge.get("validation_map")
             
-            for g_content in formatted_goals:
-                if check_solution(user_text, g_content, judge_mode):
+            if validation_map:
+                all_passed = True
+                primary_goal_content = None
+                
+                for filename, goal_path in validation_map.items():
+                    target_file = tmp_dir_path / filename
+                    
+                    if not target_file.exists():
+                        validation_failures.append(f"File missing: {filename}")
+                        all_passed = False
+                        break
+                    
+                    # Read User Content
+                    with open(target_file, "r") as f:
+                        user_content = f.read()
+                    
+                    # Read Goal Content
+                    if goal_path.exists():
+                        with open(goal_path, "r") as f:
+                            goal_raw = f.read()
+                        
+                        if filename == main_file_name:
+                            goal_content = build_file_content(selected_challenge, goal_raw)
+                            primary_goal_content = goal_content
+                        else:
+                            goal_content = goal_raw
+
+                        if not check_solution(user_content, goal_content, judge_mode):
+                            all_passed = False
+                            user_text = user_content
+                            matching_goal_content = goal_content
+                            validation_failures.append(f"File incorrect: {filename}")
+                            break
+                    
+                if all_passed:
                     is_correct = True
-                    matching_goal_content = g_content
-                    break
+                    matching_goal_content = primary_goal_content if primary_goal_content else formatted_goals[0]
+            
+            else:
+                # Legacy single-file check
+                for g_content in formatted_goals:
+                    if check_solution(user_text, g_content, judge_mode):
+                        is_correct = True
+                        matching_goal_content = g_content
+                        break
 
             duration = end_time - start_time
             
@@ -182,8 +241,6 @@ def play(challenge_id: str = typer.Argument(None, help="The ID of the challenge 
                     return
                 # else: ignore
 
-        finally:
-            pathlib.Path(tmp_file_path).unlink(missing_ok=True)
 
 @app.command()
 def stats():

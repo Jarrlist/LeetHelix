@@ -47,7 +47,7 @@ def test_play_success(mock_db):
         # We also need to mock reading the file back since helix won't actually edit it
         with patch("subprocess.run") as mock_run, \
              patch("typer.getchar", return_value="q"):
-            def mock_helix(args):
+            def mock_helix(args, **kwargs):
                 # args[1] is the temp file path
                 with open(args[1], "r") as f:
                     content = f.read()
@@ -93,7 +93,7 @@ def test_play_failure(mock_db):
     try:
         with patch("subprocess.run") as mock_run, \
              patch("typer.getchar", return_value="q"):
-            def mock_helix(args):
+            def mock_helix(args, **kwargs):
                 # User leaves it as "start" (or modifies incorrectly)
                 with open(args[1], "w") as f:
                     f.write("wrong")

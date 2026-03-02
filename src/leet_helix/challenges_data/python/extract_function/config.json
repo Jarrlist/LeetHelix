@@ -7,7 +7,7 @@
     "judge_mode": "ast",
     "start_file": "start.py",
     "goal_file": "goal.py",
-    "tips": "1. Go to the start of the function signature area_circle \n 2. yank it using Wy \n Go to char after base_area = and past using p \n Delete the rest of the line using ;vgld ",
+    "tips": "1. Go to the start of the function signature area_circle \n 2. yank it using Wy \n Go to char after base_area = and paste using p \n Delete the rest of the line using ;vgld or Ctrl-k",
     "tags": [
         "edit_yank_paste",
         "edit_change"
